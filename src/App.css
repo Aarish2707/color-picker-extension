@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* App.css */
+
+/* Color Picker Tool Styles */
+.color-picker-tool {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+}
+
+.toggle-button {
+  background: #4CAF50;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.toggle-button.active {
+  background: #f44336;
+}
+
+.picked-color {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.color-info {
+  font-size: 14px;
+}
+
+.picked-color button {
+  background: #2196F3;
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.color-tooltip {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  z-index: 10001;
+}
+
+.tooltip-swatch {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #fff;
+  margin-bottom: 3px;
+}
+
+.tooltip-text {
+  font-weight: bold;
+}
+
+/* Optional: Reset box-sizing for consistency */
+* {
+  box-sizing: border-box;
+}
