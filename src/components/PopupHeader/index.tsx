@@ -4,8 +4,11 @@ import "./PopupHeader.css";
 import BrandLogo from "../../assets/images/brand-logo.svg";
 import BrandName from "../../assets/images/brand-name.svg";
 import Menu from "../common/Menu";
+import { useState } from "react";
 
 const PopupHeader = () => {
+  const [selectedFormat, setSelectedFormat] = useState("hex");
+
   return (
     <div className="popup-header">
       <div className="brand-wrapper">
@@ -21,8 +24,8 @@ const PopupHeader = () => {
           { label: "RGB", value: "rgb" },
           { label: "HSL", value: "hsl" },
         ]}
-        selected="hex"
-        onChange={(value) => console.log(value)}
+        selected={selectedFormat}
+        onChange={setSelectedFormat}
       />
     </div>
   );
