@@ -2,5 +2,10 @@
 @reference "../../index.css";
 
 .popup-wrapper {
-    @apply max-w-[13.188rem] rounded-[1rem] border-[0.063rem] border-solid border-[#a1a1a1] bg-[#fff] p-[0.5rem];
+    @apply max-w-[13.188rem] rounded-[1rem] p-[0.5rem];
+    @apply relative;
+}
+
+.popup-bg {
+    @apply absolute top-0 left-0 w-full h-full z-[-1];
 }

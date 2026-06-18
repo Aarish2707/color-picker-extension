@@ -12,13 +12,13 @@ function App() {
     <>
       <PopupWrapper>
         <PopupHeader />
-        <div className="h-4"></div>
+        <div className="h-1"></div>
         <div className="flex justify-center gap-3">
           <ColorShower
             // color="#FF5733"
             showQuestion
           />
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center gap-3 pt-2!">
             <IconButton icon={PickerIcon} variant="contained" />
             <IconButton icon={CopyIcon} variant="outlined" />
           </div>
