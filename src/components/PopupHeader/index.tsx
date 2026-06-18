@@ -1,5 +1,3 @@
-import React from "react";
-
 import "./PopupHeader.css";
 
 // Import Brand Logo from assets/image and use as SVG here

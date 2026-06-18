@@ -1,18 +1,6 @@
-import ColorPickerTool from "./ColorPickerTool";
 import PopupHeader from "./components/PopupHeader";
 import PopupWrapper from "./components/PopupWrapper";
 
-const colors = [
-  { bg: "#e74c3c", label: "Red" },
-  { bg: "#e67e22", label: "Orange" },
-  { bg: "#f1c40f", label: "Yellow" },
-  { bg: "#2ecc71", label: "Green" },
-  { bg: "#1abc9c", label: "Teal" },
-  { bg: "#3498db", label: "Blue" },
-  { bg: "#9b59b6", label: "Purple" },
-  { bg: "#e91e63", label: "Pink" },
-  { bg: "#1a1a2e", label: "Dark" },
-];
 
 function App() {
   return (
