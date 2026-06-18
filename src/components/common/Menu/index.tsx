@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./Menu.css";
 
+import MenuIcon from "../../../assets/images/icons/menu-icon.svg";
+
 interface MenuOption {
   label: string;
   value: string;
@@ -39,21 +41,7 @@ const Menu: React.FC<MenuProps> = ({ options, selected, onChange }) => {
     <div className="menu" ref={menuRef}>
       <button className="menu-trigger" onClick={() => setIsOpen(!isOpen)}>
         <span className="menu-label">{selectedOption?.label}</span>
-        <svg
-          className={`menu-icon ${isOpen ? "menu-icon--open" : ""}`}
-          width="10"
-          height="6"
-          viewBox="0 0 10 6"
-          fill="none"
-        >
-          <path
-            d="M1 1L5 5L9 1"
-            stroke="#DBE0E4"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <img src={MenuIcon} alt="Menu" />
       </button>
       {isOpen && (
         <div className="menu-dropdown">

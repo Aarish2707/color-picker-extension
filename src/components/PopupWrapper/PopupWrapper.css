@@ -1,6 +1,11 @@
 
 .popup-wrapper {
     padding: 8px;
-    border: 1px #343434 solid;
+    border: 1px #a1a1a1 solid;
     border-radius: 16px;
+
+    max-width: 211px;
+    
+
+    background-color: #fff;
 }
