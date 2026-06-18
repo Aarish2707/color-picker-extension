@@ -1,17 +1,24 @@
+import "./App.css";
 import IconButton from "./components/common/IconButton";
 import PopupHeader from "./components/PopupHeader";
 import PopupWrapper from "./components/PopupWrapper";
 
 import PickerIcon from "./assets/images/icons/picker-icon.svg";
 import CopyIcon from "./assets/images/icons/copy-icon.svg";
+import ColorShower from "./components/common/ColorShower";
 
 function App() {
   return (
     <>
       <PopupWrapper>
         <PopupHeader />
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex items-center justify-center gap-3">
+        <div className="h-4"></div>
+        <div className="flex justify-center gap-3">
+          <ColorShower
+            // color="#FF5733"
+            showQuestion
+          />
+          <div className="flex justify-center gap-3">
             <IconButton icon={PickerIcon} variant="contained" />
             <IconButton icon={CopyIcon} variant="outlined" />
           </div>

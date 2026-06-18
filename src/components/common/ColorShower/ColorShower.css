@@ -1,0 +1,31 @@
+@reference "../../../index.css";
+
+.color-shower {
+  @apply flex items-center justify-center w-[4.8125rem] h-[4.8125rem] rounded-full bg-[#63717B];
+}
+
+@keyframes scaleInBounce {
+  0% {
+    transform: scale(0.4);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.color-shower-question {
+  @apply flex items-center justify-center;
+  animation: scaleInBounce 0.6s ease-out forwards, float 2s ease-in-out 0.6s infinite;
+}
