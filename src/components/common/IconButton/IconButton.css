@@ -12,10 +12,18 @@
   @apply bg-[#AEBAC4];
 }
 
+.icon-button--contained:active {
+  @apply bg-[#8FA5B0] scale-95;
+}
+
 .icon-button--outlined {
   @apply bg-white;
 }
 
 .icon-button--outlined:hover {
   @apply bg-[#E7ECF1];
+}
+
+.icon-button--outlined:active {
+  @apply bg-[#D5DFE8] scale-95;
 }

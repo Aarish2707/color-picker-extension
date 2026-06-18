@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import "./PopupWrapper.css";
 
 import BgSvg from "../../assets/images/bg.svg";
+import { getExtensionURL } from "../../hooks/useExtensionURL";
 
 type PopupWrapperProps = {
   children?: ReactNode;
@@ -11,7 +12,7 @@ type PopupWrapperProps = {
 const PopupWrapper = ({ children }: PopupWrapperProps) => {
   return (
     <div className="popup-wrapper">
-      <img src={BgSvg} alt="Background" className="popup-bg" />
+      <img src={getExtensionURL(BgSvg)} alt="Background" className="popup-bg" />
       {children}
     </div>
   );

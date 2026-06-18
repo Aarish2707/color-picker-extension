@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Menu.css";
 
 import MenuIcon from "../../../assets/images/icons/menu-icon.svg";
+import { getExtensionURL } from "../../../hooks/useExtensionURL";
 
 interface MenuOption {
   label: string;
@@ -28,8 +29,10 @@ const Menu: React.FC<MenuProps> = ({ options, selected, onChange }) => {
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const root = menuRef.current?.getRootNode() as Document | ShadowRoot;
+    root.addEventListener("mousedown", handleClickOutside as EventListener);
+    return () =>
+      root.removeEventListener("mousedown", handleClickOutside as EventListener);
   }, [isOpen]);
 
   const handleSelect = (value: string) => {
@@ -41,7 +44,7 @@ const Menu: React.FC<MenuProps> = ({ options, selected, onChange }) => {
     <div className="menu" ref={menuRef}>
       <button className="menu-trigger" onClick={() => setIsOpen(!isOpen)}>
         <span className="menu-label">{selectedOption?.label}</span>
-        <img src={MenuIcon} alt="Menu" />
+        <img src={getExtensionURL(MenuIcon)} alt="Menu" />
       </button>
       {isOpen && (
         <div className="menu-dropdown">

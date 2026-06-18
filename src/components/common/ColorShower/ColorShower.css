@@ -2,6 +2,7 @@
 
 .color-shower {
   @apply flex items-center justify-center w-[4.8125rem] h-[4.8125rem] rounded-full bg-[#63717B];
+  @apply border border-[#63717B];
 }
 
 @keyframes scaleInBounce {
@@ -27,5 +28,6 @@
 
 .color-shower-question {
   @apply flex items-center justify-center;
+  @apply w-8 h-8;
   animation: scaleInBounce 0.6s ease-out forwards, float 2s ease-in-out 0.6s infinite;
 }

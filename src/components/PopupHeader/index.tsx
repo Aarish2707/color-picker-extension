@@ -1,20 +1,33 @@
 import "./PopupHeader.css";
 
-// Import Brand Logo from assets/image and use as SVG here
 import BrandLogo from "../../assets/images/brand-logo.svg";
 import BrandName from "../../assets/images/brand-name.svg";
 import Menu from "../common/Menu";
-import { useState } from "react";
+import { getExtensionURL } from "../../hooks/useExtensionURL";
 
-const PopupHeader = () => {
-  const [selectedFormat, setSelectedFormat] = useState("hex");
+type ColorFormat = "hex" | "rgb" | "hsl";
+
+interface PopupHeaderProps {
+  selectedFormat: ColorFormat;
+  onFormatChange: (format: ColorFormat) => void;
+}
+
+const PopupHeader = ({ selectedFormat, onFormatChange }: PopupHeaderProps) => {
 
   return (
     <div className="popup-header">
       <div className="brand-wrapper">
-        <img src={BrandLogo} alt="Brand Logo" />
+        <img
+          className="brand-logo"
+          src={getExtensionURL(BrandLogo)}
+          alt="Brand Logo"
+        />
         <div className="">
-          <img src={BrandName} alt="Brand Name" className="title" />
+          <img
+            src={getExtensionURL(BrandName)}
+            alt="Brand Name"
+            className="title"
+          />
           <div className="lead">Point. Pick. Copy.</div>
         </div>
       </div>
@@ -25,7 +38,7 @@ const PopupHeader = () => {
           { label: "HSL", value: "hsl" },
         ]}
         selected={selectedFormat}
-        onChange={setSelectedFormat}
+        onChange={(value) => onFormatChange(value as ColorFormat)}
       />
     </div>
   );

@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(grep -oE '[`][^`]*svg[`]' /Users/apple/Desktop/pronttera/color-picker-extension/dist/content/inject.js)",
+      "Bash(grep -oE '\\(data:image|\\\\.\\\\./assets|\\\\./assets\\)[^`\"'\"'\"' \\)]*' dist/content/inject.js)",
+      "Bash(grep -oE 'getURL\\\\\\([^\\)]*\\\\\\)|brand-name[^`\"'\"'\"']*|chrome\\\\.runtime\\\\.getURL' dist/content/inject.js)",
+      "Bash(grep -c \"createElement\\(\\\\`style\\\\`\\)\\\\|appendChild\" dist/content/inject.js)",
+      "Bash(npm ls *)",
+      "Read(//Users/apple/.npm/_npx/**)",
+      "Bash(sips -s format png src/assets/images/brand-logo.svg --out /tmp/test-sips.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight /tmp/test-sips.png)",
+      "Bash(timeout 120 npx -y @resvg/resvg-js-cli --version)"
     ]
   }
 }

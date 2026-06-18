@@ -3,6 +3,7 @@ import React from "react";
 import "./ColorShower.css";
 
 import QuestionIcon from "../../../assets/images/icons/question-icon.svg";
+import { getExtensionURL } from "../../../hooks/useExtensionURL";
 
 interface ColorShowerProps {
   color?: string;
@@ -16,7 +17,7 @@ const ColorShower: React.FC<ColorShowerProps> = ({ color, showQuestion = false }
       style={color ? { backgroundColor: color } : undefined}
     >
       {showQuestion && (
-        <img className="color-shower-question" src={QuestionIcon} alt="?" />
+        <img className="color-shower-question" src={getExtensionURL(QuestionIcon)} alt="?" />
       )}
     </div>
   );
