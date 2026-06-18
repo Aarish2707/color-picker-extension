@@ -1,11 +1,6 @@
 
+@reference "../../index.css";
+
 .popup-wrapper {
-    padding: 0.5rem;
-    border: 0.063rem solid #a1a1a1;
-    border-radius: 1rem;
-
-    max-width: 13.188rem;
-    
-
-    background-color: #fff;
+    @apply max-w-[13.188rem] rounded-[1rem] border-[0.063rem] border-solid border-[#a1a1a1] bg-[#fff] p-[0.5rem];
 }

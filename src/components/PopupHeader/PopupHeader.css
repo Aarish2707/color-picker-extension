@@ -1,25 +1,19 @@
+@reference "../../index.css";
+
 .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @apply flex items-center justify-between;
 }
 
 .brand-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
+    @apply flex items-center gap-[0.375rem];
 }
 .brand-wrapper .brand-logo {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.75rem;
-    background-color: #343434;
+    @apply h-[2rem] w-[2rem] rounded-[0.75rem] bg-[#343434];
 }
 
 .title {
-   margin-bottom: 0.25rem;
+   @apply mb-[0.25rem];
 }
 .lead {
-    font-size: 0.375rem;
-    font-weight: 300;
+    @apply text-[0.375rem] font-light;
 }
