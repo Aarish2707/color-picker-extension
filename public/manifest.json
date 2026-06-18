@@ -6,12 +6,12 @@
   "permissions": ["tabs", "storage"],
   "host_permissions": ["<all_urls>"],
   "background": {
-    "service_worker": "src/background/service_worker.js"
+    "service_worker": "background/service_worker.js"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/content/colorPicker.js"]
+      "js": ["content/colorPicker.js"]
     }
   ],
   "action": {
