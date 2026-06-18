@@ -51,7 +51,12 @@ function App({ onClose }: AppProps) {
             <IconButton
               icon={getExtensionURL(CopyIcon)}
               variant="outlined"
-              onClick={() => copyColor(selectedFormat)}
+              onClick={async () => {
+                const success = await copyColor(selectedFormat);
+                if (success && onClose) {
+                  setTimeout(onClose, 200);
+                }
+              }}
               disabled={!pickedColor}
               title="Copy color to clipboard"
             />
