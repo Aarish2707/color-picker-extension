@@ -1,7 +1,7 @@
 @reference "../../index.css";
 
 .popup-header {
-    @apply flex items-center justify-between;
+    @apply flex items-center justify-between mt-2;
 }
 
 .brand-wrapper {

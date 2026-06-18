@@ -5,7 +5,7 @@
 }
 
 .menu-trigger {
-  @apply flex items-center justify-between gap-[0.75rem] p-[0.5rem] rounded-[1rem] bg-white cursor-pointer text-[0.75rem] text-black min-w-[5rem] border border-[#B9BCBF];
+  @apply flex items-center justify-between gap-[0.75rem] p-[0.5rem] rounded-[1rem] bg-white cursor-pointer text-[0.75rem] text-black min-w-[5rem] border border-[#DBE0E4];
 }
 
 .menu-icon--open {
@@ -13,7 +13,7 @@
 }
 
 .menu-dropdown {
-  @apply absolute top-[calc(100%+0.25rem)] left-0 min-w-full bg-white rounded-[0.75rem] p-[0.25rem] z-10 border border-[#B9BCBF];
+  @apply absolute top-[calc(100%+0.25rem)] left-0 min-w-full bg-white rounded-[0.75rem] p-[0.25rem] z-10 border border-[#DBE0E4];
 }
 
 .menu-option {
