@@ -7,6 +7,19 @@
 .brand-wrapper {
     @apply flex items-center gap-[0.375rem];
 }
+.brand-title-wrapper {
+    @apply relative h-5 overflow-hidden;
+    @apply flex flex-col gap-4;
+}
+.brand-title-wrapper .wp{
+    transform: translateY(-20px);
+    width: 3.5rem;
+}
+.brand-title-wrapper.visible .wp {
+    transform: translateY(-0px);
+    transition: transform 0.5s ease-in-out;
+
+}
 .brand-wrapper .brand-logo {
     @apply h-[2rem] w-[2rem] rounded-[0.75rem] bg-[#343434];
 }
@@ -25,7 +38,7 @@
   height: 21px;
   opacity: 1;
   gap: 5px;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #000000;
   white-space: nowrap;

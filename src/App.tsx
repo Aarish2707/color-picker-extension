@@ -39,6 +39,7 @@ function App({ onClose }: AppProps) {
           selectedFormat={selectedFormat}
           onFormatChange={handleFormatChange}
           copied={copied}
+          onClose={() => handleClose()}
         />
         <div className="h-1"></div>
         <div className="flex justify-center gap-3">
