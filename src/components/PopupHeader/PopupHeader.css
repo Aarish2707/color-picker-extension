@@ -19,3 +19,16 @@
 .lead {
     @apply text-[0.375rem] font-black text-black;
 }
+
+.copied-label {
+  width: 88px;
+  height: 21px;
+  opacity: 1;
+  gap: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000000;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}

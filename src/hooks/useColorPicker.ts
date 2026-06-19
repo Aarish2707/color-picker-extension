@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useColorFormat } from "./useColorFormat";
 
 type ColorFormat = "hex" | "rgb" | "hsl";
@@ -6,6 +6,7 @@ type ColorFormat = "hex" | "rgb" | "hsl";
 interface UseColorPickerReturn {
   pickedColor: string | null;
   isPickingActive: boolean;
+  copied: boolean;
   startColorPicking: (format: ColorFormat) => void;
   copyColor: (format: ColorFormat) => Promise<boolean>;
 }
@@ -23,7 +24,15 @@ interface EyeDropperConstructor {
 export const useColorPicker = (): UseColorPickerReturn => {
   const [pickedColor, setPickedColor] = useState<string | null>(null);
   const [isPickingActive, setIsPickingActive] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { formatColor } = useColorFormat();
+
+  const flashCopied = useCallback(() => {
+    if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+    setCopied(true);
+    copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
+  }, []);
 
   useEffect(() => {
     chrome.storage.session.get("lastPick", (data: { lastPick?: { hex: string } }) => {
@@ -62,24 +71,25 @@ export const useColorPicker = (): UseColorPickerReturn => {
         const hex = result.sRGBHex.toUpperCase();
         setPickedColor(hex);
         chrome.storage.session.set({ lastPick: { hex, at: Date.now() } });
-        writeToClipboard(formatColor(hex, format));
+        writeToClipboard(formatColor(hex, format)).then(() => flashCopied());
       })
       .catch(() => {})
       .finally(() => setIsPickingActive(false));
-  }, [writeToClipboard, formatColor]);
+  }, [writeToClipboard, formatColor, flashCopied]);
 
   const copyColor = useCallback(
     async (format: ColorFormat): Promise<boolean> => {
       if (!pickedColor) return false;
       try {
         await writeToClipboard(formatColor(pickedColor, format));
+        flashCopied();
         return true;
       } catch {
         return false;
       }
     },
-    [pickedColor, formatColor, writeToClipboard]
+    [pickedColor, formatColor, writeToClipboard, flashCopied]
   );
 
-  return { pickedColor, isPickingActive, startColorPicking, copyColor };
+  return { pickedColor, isPickingActive, copied, startColorPicking, copyColor };
 };

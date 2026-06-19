@@ -17,7 +17,7 @@ interface AppProps {
 }
 
 function App({ onClose }: AppProps) {
-  const { pickedColor, startColorPicking } = useColorPicker();
+  const { pickedColor, copied, startColorPicking } = useColorPicker();
   const [selectedFormat, setSelectedFormat] = useState<ColorFormat>("hex");
   const [closing, setClosing] = useState(false);
 
@@ -38,6 +38,7 @@ function App({ onClose }: AppProps) {
         <PopupHeader
           selectedFormat={selectedFormat}
           onFormatChange={handleFormatChange}
+          copied={copied}
         />
         <div className="h-1"></div>
         <div className="flex justify-center gap-3">

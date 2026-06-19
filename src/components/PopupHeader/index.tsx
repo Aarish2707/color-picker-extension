@@ -10,25 +10,32 @@ type ColorFormat = "hex" | "rgb" | "hsl";
 interface PopupHeaderProps {
   selectedFormat: ColorFormat;
   onFormatChange: (format: ColorFormat) => void;
+  copied?: boolean;
 }
 
-const PopupHeader = ({ selectedFormat, onFormatChange }: PopupHeaderProps) => {
+const PopupHeader = ({ selectedFormat, onFormatChange, copied }: PopupHeaderProps) => {
   return (
     <div className="popup-header">
       <div className="brand-wrapper">
-        <img
-          className="brand-logo"
-          src={getExtensionURL(BrandLogo)}
-          alt="Brand Logo"
-        />
-        <div>
-          <img
-            src={getExtensionURL(BrandName)}
-            alt="Brand Name"
-            className="title"
-          />
-          <div className="lead">Point. Pick. Copy.</div>
-        </div>
+        {copied ? (
+          <span className="copied-label">COPIED 👍</span>
+        ) : (
+          <>
+            <img
+              className="brand-logo"
+              src={getExtensionURL(BrandLogo)}
+              alt="Brand Logo"
+            />
+            <div>
+              <img
+                src={getExtensionURL(BrandName)}
+                alt="Brand Name"
+                className="title"
+              />
+              <div className="lead">Point. Pick. Copy.</div>
+            </div>
+          </>
+        )}
       </div>
       <Menu
         options={[
