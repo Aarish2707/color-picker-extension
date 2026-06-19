@@ -11,7 +11,11 @@ interface ColorShowerProps {
   onClick?: () => void;
 }
 
-const ColorShower: React.FC<ColorShowerProps> = ({ color, showQuestion = false, onClick }) => {
+const ColorShower: React.FC<ColorShowerProps> = ({
+  color,
+  showQuestion = false,
+  onClick,
+}) => {
   return (
     <div
       className={`color-shower${onClick ? " cursor-pointer" : ""}`}
@@ -19,7 +23,11 @@ const ColorShower: React.FC<ColorShowerProps> = ({ color, showQuestion = false, 
       onClick={onClick}
     >
       {showQuestion && (
-        <img className="color-shower-question w-8 h-8" src={getExtensionURL(QuestionIcon)} alt="?" />
+        <img
+          className="color-shower-question"
+          src={getExtensionURL(QuestionIcon)}
+          alt="?"
+        />
       )}
     </div>
   );

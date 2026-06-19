@@ -1,7 +1,7 @@
 @reference "../../../index.css";
 
 .color-shower {
-  @apply flex items-center justify-center w-[4.8125rem] h-[4.8125rem] rounded-full bg-[#63717B];
+  @apply grid place-content-center w-[4.8125rem] h-[4.8125rem] rounded-full bg-[#63717B];
   @apply border border-[#63717B];
 }
 
@@ -13,7 +13,7 @@
     transform: scale(1.1);
   }
   100% {
-    transform: scale(1);
+    transform: scale(2);
   }
 }
 
@@ -27,7 +27,6 @@
 }
 
 .color-shower-question {
-  @apply flex items-center justify-center;
-  @apply w-16 h-16;
+  @apply min-w-12 min-h-12;
   animation: scaleInBounce 0.6s ease-out forwards, float 2s ease-in-out 0.6s infinite;
 }
