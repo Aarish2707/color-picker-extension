@@ -14,8 +14,8 @@
 .title {
    @apply mb-[0.25rem];
    @apply w-[3.25rem];
-
 }
+
 .lead {
-    @apply text-[0.375rem] font-light;
+    @apply text-[0.375rem] font-black text-black;
 }

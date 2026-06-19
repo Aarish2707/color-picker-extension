@@ -1,9 +1,29 @@
 
 @reference "../../index.css";
 
+@keyframes slideInBounce {
+  0%   { transform: translateX(110%); opacity: 0; }
+  55%  { transform: translateX(-24px); opacity: 1; }
+  70%  { transform: translateX(14px); }
+  85%  { transform: translateX(-8px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes slideOutBounce {
+  0%   { transform: translateX(0); opacity: 1; }
+  15%  { transform: translateX(-20px); }
+  30%  { transform: translateX(8px); }
+  100% { transform: translateX(110%); opacity: 0; }
+}
+
 .popup-wrapper {
     @apply max-w-[13.188rem] rounded-[1rem] p-[0.5rem];
     @apply relative;
+    animation: slideInBounce 1s ease-in-out 1s both;
+}
+
+.popup-wrapper.closing {
+    animation: slideOutBounce 1s ease-in-out forwards;
 }
 
 .popup-bg {

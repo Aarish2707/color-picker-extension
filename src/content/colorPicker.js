@@ -24,12 +24,59 @@ function getColor(element) {
   return 'rgb(255, 255, 255)';
 }
 
+// ---------- color format converters ----------
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) return { r: 0, g: 0, b: 0 };
+  return { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) };
+}
+
+function rgbToHslValues(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function formatHex(hex, format) {
+  if (!format || format === 'hex') return hex;
+  if (format === 'rgb') {
+    const { r, g, b } = hexToRgb(hex);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  if (format === 'hsl') {
+    const { r, g, b } = hexToRgb(hex);
+    const { h, s, l } = rgbToHslValues(r, g, b);
+    return `hsl(${h}, ${s}%, ${l}%)`;
+  }
+  return hex;
+}
+
+function loadColorFormat() {
+  if (!storage) return Promise.resolve('hex');
+  return new Promise((resolve) => {
+    try {
+      storage.get('colorFormat', (data) => resolve(data && data.colorFormat ? data.colorFormat : 'hex'));
+    } catch (_) { resolve('hex'); }
+  });
+}
+
 // ---------- state ----------
 let isPicking = false;
 let lastHex = '#000000';
 let handleMouseMove, handleClick, handleKeyDown;
 let panel = null;
-let liveSwatchEl, liveTextEl, pickedSwatchEl, pickedTextEl, copyBtn, stopBtn;
+let liveSwatchEl, liveTextEl, pickedSwatchEl, pickedTextEl, stopBtn;
 let dragState = null;
 
 // ---------- storage helpers ----------
@@ -192,30 +239,10 @@ function createPanel(initialPickedHex) {
   pickedTextEl = document.createElement('span');
   pickedTextEl.textContent = initialPickedHex || '—';
   Object.assign(pickedTextEl.style, { marginLeft: 'auto', fontWeight: 'bold' });
-  copyBtn = document.createElement('button');
-  copyBtn.type = 'button';
-  copyBtn.textContent = 'Copy';
-  Object.assign(copyBtn.style, {
-    background: '#2196F3',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    padding: '4px 8px',
-    fontSize: '11px',
-    cursor: 'pointer',
-    fontFamily: 'inherit',
-  });
-  copyBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const hex = pickedTextEl.textContent;
-    if (!hex || hex === '—') return;
-    navigator.clipboard.writeText(hex).then(() => flashCopy());
-  });
+
   pickedRow.appendChild(pickedSwatchEl);
   pickedRow.appendChild(pickedLabel);
   pickedRow.appendChild(pickedTextEl);
-  pickedRow.appendChild(copyBtn);
 
   panel.appendChild(header);
   panel.appendChild(liveRow);
@@ -237,17 +264,7 @@ function createPanel(initialPickedHex) {
   return panel;
 }
 
-function flashCopy() {
-  if (!copyBtn) return;
-  const old = copyBtn.textContent;
-  copyBtn.textContent = 'Copied!';
-  copyBtn.style.background = '#4CAF50';
-  setTimeout(() => {
-    if (!copyBtn) return;
-    copyBtn.textContent = old;
-    copyBtn.style.background = '#2196F3';
-  }, 900);
-}
+
 
 function attachDrag(handle) {
   handle.addEventListener('pointerdown', (e) => {
@@ -284,7 +301,7 @@ function attachDrag(handle) {
 function removePanel() {
   if (panel && panel.parentNode) panel.parentNode.removeChild(panel);
   panel = null;
-  liveSwatchEl = liveTextEl = pickedSwatchEl = pickedTextEl = copyBtn = stopBtn = null;
+
 }
 
 // ---------- picking lifecycle ----------
@@ -313,7 +330,22 @@ function startPicking() {
     const hex = lastHex;
     updatePickedColor(hex);
     saveLast(hex);
-    navigator.clipboard.writeText(hex).catch(() => { /* clipboard may be denied; ignore */ });
+
+    // Read user's chosen format, convert, then copy
+    loadColorFormat().then((format) => {
+      const colorValue = formatHex(hex, format);
+      // Try async clipboard API first, fallback to textarea method if denied
+      navigator.clipboard.writeText(colorValue).catch(() => {
+        const el = document.createElement('textarea');
+        el.value = colorValue;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      });
+    });
     // picking continues — the user can pick more colors. Stop via × or Escape.
   };
 

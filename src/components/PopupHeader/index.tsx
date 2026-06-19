@@ -13,7 +13,6 @@ interface PopupHeaderProps {
 }
 
 const PopupHeader = ({ selectedFormat, onFormatChange }: PopupHeaderProps) => {
-
   return (
     <div className="popup-header">
       <div className="brand-wrapper">
@@ -22,7 +21,7 @@ const PopupHeader = ({ selectedFormat, onFormatChange }: PopupHeaderProps) => {
           src={getExtensionURL(BrandLogo)}
           alt="Brand Logo"
         />
-        <div className="">
+        <div>
           <img
             src={getExtensionURL(BrandName)}
             alt="Brand Name"

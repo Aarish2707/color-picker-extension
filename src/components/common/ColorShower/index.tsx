@@ -8,13 +8,15 @@ import { getExtensionURL } from "../../../hooks/useExtensionURL";
 interface ColorShowerProps {
   color?: string;
   showQuestion?: boolean;
+  onClick?: () => void;
 }
 
-const ColorShower: React.FC<ColorShowerProps> = ({ color, showQuestion = false }) => {
+const ColorShower: React.FC<ColorShowerProps> = ({ color, showQuestion = false, onClick }) => {
   return (
     <div
-      className="color-shower"
+      className={`color-shower${onClick ? " cursor-pointer" : ""}`}
       style={color ? { backgroundColor: color } : undefined}
+      onClick={onClick}
     >
       {showQuestion && (
         <img className="color-shower-question" src={getExtensionURL(QuestionIcon)} alt="?" />

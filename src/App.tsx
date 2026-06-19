@@ -5,7 +5,6 @@ import PopupHeader from "./components/PopupHeader";
 import PopupWrapper from "./components/PopupWrapper";
 
 import PickerIcon from "./assets/images/icons/picker-icon.svg";
-import CopyIcon from "./assets/images/icons/copy-icon.svg";
 import CloseIcon from "./assets/images/icons/close-icon.svg";
 import ColorShower from "./components/common/ColorShower";
 import { useColorPicker } from "./hooks/useColorPicker";
@@ -18,22 +17,27 @@ interface AppProps {
 }
 
 function App({ onClose }: AppProps) {
-  const { pickedColor, startColorPicking, copyColor } = useColorPicker();
+  const { pickedColor, startColorPicking } = useColorPicker();
   const [selectedFormat, setSelectedFormat] = useState<ColorFormat>("hex");
+  const [closing, setClosing] = useState(false);
+
+  // Persist format to storage so the content script can read it on click
+  const handleFormatChange = (format: ColorFormat) => {
+    setSelectedFormat(format);
+    chrome.storage.session.set({ colorFormat: format });
+  };
+
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => onClose?.(), 1000);
+  };
 
   return (
     <div className="flex flex-col gap-2 items-end">
-      <IconButton
-        icon={getExtensionURL(CloseIcon)}
-        variant="outlined"
-        onClick={onClose}
-        title="To close the extension"
-        className="!border-[#DBDBDB]"
-      />
-      <PopupWrapper>
+      <PopupWrapper closing={closing}>
         <PopupHeader
           selectedFormat={selectedFormat}
-          onFormatChange={setSelectedFormat}
+          onFormatChange={handleFormatChange}
         />
         <div className="h-1"></div>
         <div className="flex justify-center gap-3">
@@ -45,20 +49,15 @@ function App({ onClose }: AppProps) {
             <IconButton
               icon={getExtensionURL(PickerIcon)}
               variant="contained"
-              onClick={startColorPicking}
+              onClick={() => startColorPicking(selectedFormat)}
               title="Pick a color from the page"
             />
             <IconButton
-              icon={getExtensionURL(CopyIcon)}
+              icon={getExtensionURL(CloseIcon)}
               variant="outlined"
-              onClick={async () => {
-                const success = await copyColor(selectedFormat);
-                if (success && onClose) {
-                  setTimeout(onClose, 200);
-                }
-              }}
-              disabled={!pickedColor}
-              title="Copy color to clipboard"
+              onClick={handleClose}
+              title="Close the extension"
+              className="!border-[#DBDBDB]"
             />
           </div>
         </div>

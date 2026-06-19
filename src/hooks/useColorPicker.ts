@@ -6,7 +6,7 @@ type ColorFormat = "hex" | "rgb" | "hsl";
 interface UseColorPickerReturn {
   pickedColor: string | null;
   isPickingActive: boolean;
-  startColorPicking: () => void;
+  startColorPicking: (format: ColorFormat) => void;
   copyColor: (format: ColorFormat) => Promise<boolean>;
 }
 
@@ -33,7 +33,21 @@ export const useColorPicker = (): UseColorPickerReturn => {
     });
   }, []);
 
-  const startColorPicking = useCallback(() => {
+  const writeToClipboard = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const el = document.createElement("textarea");
+      el.value = text;
+      el.style.cssText = "position:fixed;opacity:0";
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    }
+  }, []);
+
+  const startColorPicking = useCallback((format: ColorFormat) => {
     const EyeDropper = (window as unknown as Record<string, unknown>).EyeDropper as
       | EyeDropperConstructor
       | undefined;
@@ -48,23 +62,23 @@ export const useColorPicker = (): UseColorPickerReturn => {
         const hex = result.sRGBHex.toUpperCase();
         setPickedColor(hex);
         chrome.storage.session.set({ lastPick: { hex, at: Date.now() } });
+        writeToClipboard(formatColor(hex, format));
       })
       .catch(() => {})
       .finally(() => setIsPickingActive(false));
-  }, []);
+  }, [writeToClipboard, formatColor]);
 
   const copyColor = useCallback(
     async (format: ColorFormat): Promise<boolean> => {
       if (!pickedColor) return false;
       try {
-        const formattedColor = formatColor(pickedColor, format);
-        await navigator.clipboard.writeText(formattedColor);
+        await writeToClipboard(formatColor(pickedColor, format));
         return true;
       } catch {
         return false;
       }
     },
-    [pickedColor, formatColor]
+    [pickedColor, formatColor, writeToClipboard]
   );
 
   return { pickedColor, isPickingActive, startColorPicking, copyColor };
