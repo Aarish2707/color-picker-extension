@@ -12,7 +12,7 @@
     @apply flex flex-col gap-4;
 }
 .brand-title-wrapper .wp{
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
     width: 3.5rem;
 }
 .brand-title-wrapper.visible .wp {
@@ -25,8 +25,8 @@
 }
 
 .title {
-   @apply mb-[0.25rem];
-   @apply w-[3.25rem];
+   margin-bottom: 0.25rem;
+   width: 3.25rem;
 }
 
 .lead {
@@ -34,10 +34,10 @@
 }
 
 .copied-label {
-  width: 88px;
-  height: 21px;
+  width: 5.5rem;
+  height: 1.3125rem;
   opacity: 1;
-  gap: 5px;
+  gap: 0.3125rem;
   font-size: 0.7rem;
   font-weight: 700;
   color: #000000;
