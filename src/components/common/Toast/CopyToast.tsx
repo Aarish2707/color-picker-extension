@@ -33,6 +33,14 @@ export const CopyToast = ({ value, visible }: CopyToastProps) => {
 
   if (!render) return null;
 
+  const colorType = (() => {
+    if (!value) return "";
+    if (value.startsWith("#")) return "HEX";
+    if (value.toLowerCase().startsWith("rgb")) return "RGB";
+    if (value.toLowerCase().startsWith("hsl")) return "HSL";
+    return "";
+  })();
+
   return (
     <div
       style={{
@@ -103,7 +111,7 @@ export const CopyToast = ({ value, visible }: CopyToastProps) => {
           width: "14px",
           height: "14px",
           borderRadius: "4px",
-          background: value?.startsWith("#") ? value : undefined,
+          background: value || undefined,
           border: "1px solid rgba(0,0,0,0.10)",
           flexShrink: 0,
         }}
@@ -111,7 +119,9 @@ export const CopyToast = ({ value, visible }: CopyToastProps) => {
 
       {/* Text */}
       <span style={{ letterSpacing: "0.01em", lineHeight: 1 }}>
-        <span style={{ color: "#71717A", fontWeight: 400 }}>Copied </span>
+        <span style={{ color: "#71717A", fontWeight: 400 }}>
+          Copied {colorType ? `${colorType}: ` : ""}
+        </span>
         <span style={{ color: "#18181B", fontWeight: 600 }}>{value}</span>
       </span>
     </div>
