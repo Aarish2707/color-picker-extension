@@ -1,5 +1,6 @@
-// src/components/common/CopyToast.tsx
 import { useEffect, useState } from "react";
+import GreenCheckIcon from "../../../assets/images/icons/green-check.svg";
+import { getExtensionURL } from "../../../hooks/useExtensionURL";
 
 interface CopyToastProps {
   value: string | null;
@@ -7,38 +8,44 @@ interface CopyToastProps {
 }
 
 export const CopyToast = ({ value, visible }: CopyToastProps) => {
-  const [show, setShow] = useState(false);
-  const [render, setRender] = useState(false);
-  const [exiting, setExiting] = useState(false);
+  const [show, setShow]         = useState(false);
+  const [render, setRender]     = useState(false);
+  const [exiting, setExiting]   = useState(false);
+  const [snapshot, setSnapshot] = useState<string | null>(null); 
 
   useEffect(() => {
     if (visible) {
       setExiting(false);
+      setSnapshot(value); 
       setRender(true);
       const frame = requestAnimationFrame(() =>
         requestAnimationFrame(() => setShow(true))
       );
       return () => cancelAnimationFrame(frame);
     } else {
-      // Mark as exiting so we can switch the curve
       setExiting(true);
       setShow(false);
       const timer = setTimeout(() => {
         setRender(false);
         setExiting(false);
-      }, 280);
+        setSnapshot(null); 
+      }, 240);
       return () => clearTimeout(timer);
     }
   }, [visible]);
 
   if (!render) return null;
 
-  const colorType = (() => {
-    if (!value) return "";
-    if (value.startsWith("#")) return "HEX";
-    if (value.toLowerCase().startsWith("rgb")) return "RGB";
-    if (value.toLowerCase().startsWith("hsl")) return "HSL";
-    return "";
+  const displayValue = snapshot; 
+
+  const swatchColor = (() => {
+    if (!displayValue) return "#cccccc";
+    if (displayValue.startsWith("#")) return displayValue;
+    if (
+      displayValue.toLowerCase().startsWith("rgb") ||
+      displayValue.toLowerCase().startsWith("hsl")
+    ) return displayValue;
+    return "#cccccc";
   })();
 
   return (
@@ -47,83 +54,80 @@ export const CopyToast = ({ value, visible }: CopyToastProps) => {
         position: "fixed",
         bottom: "32px",
         left: "50%",
+        display: "flex",
+        alignItems: "stretch",
+        background: "#ffffff",
+        border: "1px solid rgba(0,0,0,0.10)",
+        borderRadius: "18px",
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        pointerEvents: "none",
+        zIndex: 2147483647,
+        opacity: show ? 1 : 0,
         transform: show
           ? "translateX(-50%) translateY(0) scale(1)"
           : exiting
-          ? "translateX(-50%) translateY(20px) scale(0.92)"
-          : "translateX(-50%) translateY(16px) scale(0.95)",
-        zIndex: 2147483647,
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
-        background: "#ffffff",
-        border: "1px solid #E4E4E7",
-        borderRadius: "16px",
-        padding: "18px 32px",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)",
-        fontFamily: "Poppins, sans-serif",
-        fontSize: "16px",
-        fontWeight: 500,
-        color: "#18181B",
-        whiteSpace: "nowrap",
-        pointerEvents: "none",
-        opacity: show ? 1 : 0,
-        // Spring curve for entry, sharp ease-in for exit
+          ? "translateX(-50%) translateY(8px) scale(0.96)"
+          : "translateX(-50%) translateY(14px) scale(0.94)",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.08)",
         transition: exiting
-          ? [
-              "opacity 240ms cubic-bezier(0.4, 0, 1, 1)",
-              "transform 240ms cubic-bezier(0.4, 0, 1, 1)",
-            ].join(", ")
-          : [
-              "opacity 320ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-              "transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-            ].join(", "),
+          ? "opacity 200ms cubic-bezier(0.55,0,1,0.45), transform 200ms cubic-bezier(0.55,0,1,0.45)"
+          : "opacity 380ms cubic-bezier(0.22,1,0.36,1), transform 380ms cubic-bezier(0.22,1,0.36,1)",
       }}
     >
-      {/* Check circle */}
       <span
+        style={{
+          width: "56px",
+          alignSelf: "stretch",
+          background: swatchColor,
+          flexShrink: 0,
+          display: "block",
+        }}
+      />
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: "16px 20px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "16px",
+            fontWeight: 700,
+            color: "#111827",
+            fontFamily: "Poppins, sans-serif",
+            letterSpacing: "0.01em",
+          }}
+        >
+          {displayValue}
+        </span>
+        <span
+          style={{
+            fontSize: "16px",
+            fontWeight: 400,
+            color: "#6B7280",
+            fontFamily: "Poppins, sans-serif",
+            marginLeft: "6px",
+          }}
+        >
+          Copied!
+        </span>
+      </div>
+
+      {/* Section 3: green check icon */}
+      <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: "28px",
-          height: "28px",
-          borderRadius: "50%",
-          background: "#DCFCE7",
+          padding: "0 18px 0 4px",
           flexShrink: 0,
         }}
       >
-        <svg width="15" height="15" viewBox="0 0 10 10" fill="none">
-          <path
-            d="M2 5L4 7L8 3"
-            stroke="#16A34A"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-
-      {/* Color swatch */}
-      <span
-        style={{
-          display: "inline-block",
-          width: "14px",
-          height: "14px",
-          borderRadius: "4px",
-          background: value || undefined,
-          border: "1px solid rgba(0,0,0,0.10)",
-          flexShrink: 0,
-        }}
-      />
-
-      {/* Text */}
-      <span style={{ letterSpacing: "0.01em", lineHeight: 1 }}>
-        <span style={{ color: "#71717A", fontWeight: 400 }}>
-          Copied {colorType ? `${colorType}: ` : ""}
-        </span>
-        <span style={{ color: "#18181B", fontWeight: 600 }}>{value}</span>
-      </span>
+        <img src={getExtensionURL(GreenCheckIcon)} alt="Copied" width={28} height={28} />
+      </div>
     </div>
   );
 };
