@@ -1,7 +1,5 @@
 import "./PopupHeader.css";
 
-import React from "react";
-
 import BrandLogo from "../../assets/images/brand-logo.svg";
 import BrandName from "../../assets/images/brand-name.svg";
 import Menu from "../common/Menu";
@@ -12,25 +10,12 @@ type ColorFormat = "hex" | "rgb" | "hsl";
 interface PopupHeaderProps {
   selectedFormat: ColorFormat;
   onFormatChange: (format: ColorFormat) => void;
-  copied?: boolean;
-  onClose?: () => void;
 }
 
 const PopupHeader = ({
   selectedFormat,
   onFormatChange,
-  copied,
-  onClose,
 }: PopupHeaderProps) => {
-  const [isCopiedVisible, setIsCopiedVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    if (copied) {
-      setIsCopiedVisible(true);
-      const timeout = setTimeout(() => onClose?.(), 2000);
-      return () => clearTimeout(timeout);
-    }
-  }, [copied, onClose]);
   return (
     <div className="popup-header">
       <div className="brand-wrapper">
@@ -40,20 +25,12 @@ const PopupHeader = ({
             src={getExtensionURL(BrandLogo)}
             alt="Brand Logo"
           />
-
           <div>
-            <div
-              className={`brand-title-wrapper ${isCopiedVisible ? "visible" : ""}`}
-            >
-              <div className="wp">
-                <div className="copied-label">COPIED 👍</div>
-                <img
-                  src={getExtensionURL(BrandName)}
-                  alt="Brand Name"
-                  className="title"
-                />
-              </div>
-            </div>
+            <img
+              src={getExtensionURL(BrandName)}
+              alt="Brand Name"
+              className="title"
+            />
             <div className="lead">Point. Pick. Copy.</div>
           </div>
         </>

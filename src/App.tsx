@@ -9,6 +9,7 @@ import CloseIcon from "./assets/images/icons/close-icon.svg";
 import ColorShower from "./components/common/ColorShower";
 import { useColorPicker } from "./hooks/useColorPicker";
 import { getExtensionURL } from "./hooks/useExtensionURL";
+import { CopyToast } from "./components/common/Toast/CopyToast";
 
 type ColorFormat = "hex" | "rgb" | "hsl";
 
@@ -17,11 +18,10 @@ interface AppProps {
 }
 
 function App({ onClose }: AppProps) {
-  const { pickedColor, copied, startColorPicking } = useColorPicker();
+  const { pickedColor, copied, copiedValue, startColorPicking } = useColorPicker();
   const [selectedFormat, setSelectedFormat] = useState<ColorFormat>("hex");
   const [closing, setClosing] = useState(false);
 
-  // Persist format to storage so the content script can read it on click
   const handleFormatChange = (format: ColorFormat) => {
     setSelectedFormat(format);
     chrome.storage.session.set({ colorFormat: format });
@@ -33,13 +33,12 @@ function App({ onClose }: AppProps) {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-end">
+    <div className="flex flex-col gap-2 items-end relative">
+      <CopyToast value={copiedValue} visible={copied} />
       <PopupWrapper closing={closing}>
         <PopupHeader
           selectedFormat={selectedFormat}
           onFormatChange={handleFormatChange}
-          copied={copied}
-          onClose={() => handleClose()}
         />
         <div className="h-1"></div>
         <div className="flex justify-center gap-3">

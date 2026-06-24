@@ -7,6 +7,7 @@ interface UseColorPickerReturn {
   pickedColor: string | null;
   isPickingActive: boolean;
   copied: boolean;
+  copiedValue: string | null;
   startColorPicking: (format: ColorFormat) => void;
   copyColor: (format: ColorFormat) => Promise<boolean>;
 }
@@ -25,13 +26,18 @@ export const useColorPicker = (): UseColorPickerReturn => {
   const [pickedColor, setPickedColor] = useState<string | null>(null);
   const [isPickingActive, setIsPickingActive] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedValue, setCopiedValue] = useState<string | null>(null);
   const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { formatColor } = useColorFormat();
 
-  const flashCopied = useCallback(() => {
+  const flashCopied = useCallback((value: string) => {
     if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
     setCopied(true);
-    copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
+    setCopiedValue(value);
+    copiedTimerRef.current = setTimeout(() => {
+      setCopied(false);
+      setCopiedValue(null);
+    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -71,7 +77,8 @@ export const useColorPicker = (): UseColorPickerReturn => {
         const hex = result.sRGBHex.toUpperCase();
         setPickedColor(hex);
         chrome.storage.session.set({ lastPick: { hex, at: Date.now() } });
-        writeToClipboard(formatColor(hex, format)).then(() => flashCopied());
+        const formatted = formatColor(hex, format);
+        writeToClipboard(formatted).then(() => flashCopied(formatted));
       })
       .catch(() => {})
       .finally(() => setIsPickingActive(false));
@@ -81,8 +88,9 @@ export const useColorPicker = (): UseColorPickerReturn => {
     async (format: ColorFormat): Promise<boolean> => {
       if (!pickedColor) return false;
       try {
-        await writeToClipboard(formatColor(pickedColor, format));
-        flashCopied();
+        const formatted = formatColor(pickedColor, format);
+        await writeToClipboard(formatted);
+        flashCopied(formatted);
         return true;
       } catch {
         return false;
@@ -91,5 +99,5 @@ export const useColorPicker = (): UseColorPickerReturn => {
     [pickedColor, formatColor, writeToClipboard, flashCopied]
   );
 
-  return { pickedColor, isPickingActive, copied, startColorPicking, copyColor };
+  return { pickedColor, isPickingActive, copied, copiedValue, startColorPicking, copyColor };
 };
