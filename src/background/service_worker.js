@@ -1,11 +1,3 @@
-// chrome.action.onClicked.addListener(async (tab) => {
-//   if (!tab.id) return;
-
-//   await chrome.scripting.executeScript({
-//     target: { tabId: tab.id },
-//     files: ["content/inject.js"]
-//   });
-// });
 const RESTRICTED = [
   /^chrome:\/\//,
   /^chrome-extension:\/\//,
@@ -31,8 +23,8 @@ chrome.action.onClicked.addListener(async (tab) => {
 
   if (isRestricted(tab.url)) {
     // Open the how-to page instead of trying to inject
-    // chrome.tabs.create({ url: "https://pixel-pick.onrender.com/how-to-open" });
-    chrome.tabs.create({ url: "http://localhost:3000/how-to-open" });
+    chrome.tabs.create({ url: "https://pixel-pick.onrender.com/how-to-open" });
+    // chrome.tabs.create({ url: "http://localhost:3000/how-to-open" });
     return;
   }
 
@@ -44,7 +36,7 @@ chrome.action.onClicked.addListener(async (tab) => {
   } catch (err) {
     // Fallback safety net — catches any edge cases the regex misses
     console.warn("PixelPick: Could not inject on this page.", err.message);
-    // chrome.tabs.create({ url: "https://pixel-pick.onrender.com/how-to-open" });
-    chrome.tabs.create({ url: "http://localhost:3000/how-to-open" });
+    chrome.tabs.create({ url: "https://pixel-pick.onrender.com/how-to-open" });
+    // chrome.tabs.create({ url: "http://localhost:3000/how-to-open" });
   }
 });
