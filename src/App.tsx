@@ -50,7 +50,7 @@ function App({ onClose }: AppProps) {
             <IconButton
               icon={getExtensionURL(PickerIcon)}
               variant="contained"
-              onClick={() => startColorPicking(selectedFormat)}
+              onClick={() => startColorPicking(selectedFormat, handleClose)}
               title="Pick a color from the page"
             />
             <IconButton

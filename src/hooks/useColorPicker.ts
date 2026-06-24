@@ -8,7 +8,7 @@ interface UseColorPickerReturn {
   isPickingActive: boolean;
   copied: boolean;
   copiedValue: string | null;
-  startColorPicking: (format: ColorFormat) => void;
+  startColorPicking: (format: ColorFormat, onAfterCopy?: () => void) => void;
   copyColor: (format: ColorFormat) => Promise<boolean>;
 }
 
@@ -62,7 +62,7 @@ export const useColorPicker = (): UseColorPickerReturn => {
     }
   }, []);
 
-  const startColorPicking = useCallback((format: ColorFormat) => {
+  const startColorPicking = useCallback((format: ColorFormat, onAfterCopy?: () => void) => {
     const EyeDropper = (window as unknown as Record<string, unknown>).EyeDropper as
       | EyeDropperConstructor
       | undefined;
@@ -78,7 +78,10 @@ export const useColorPicker = (): UseColorPickerReturn => {
         setPickedColor(hex);
         chrome.storage.session.set({ lastPick: { hex, at: Date.now() } });
         const formatted = formatColor(hex, format);
-        writeToClipboard(formatted).then(() => flashCopied(formatted));
+        writeToClipboard(formatted).then(() => {
+          flashCopied(formatted);
+          setTimeout(() => onAfterCopy?.(), 1500);
+        });
       })
       .catch(() => {})
       .finally(() => setIsPickingActive(false));
